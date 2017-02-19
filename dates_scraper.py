@@ -20,7 +20,7 @@ import datefinder
 #it runs once for each year (or twice in years with two presidents)
 
 def extractor( year, f, i_date, count ):
-	print 'Scraping' year
+	print 'Scraping', year
 
 	#fairly self explanatory. url_start holds the beginning that is in every
 	#link, and url combines it with the year (or year-president) and ".html"
