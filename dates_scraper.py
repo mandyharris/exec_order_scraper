@@ -20,6 +20,8 @@ import datefinder
 #it runs once for each year (or twice in years with two presidents)
 
 def extractor( year, f, i_date, count ):
+	print 'Scraping' year
+
 	#fairly self explanatory. url_start holds the beginning that is in every
 	#link, and url combines it with the year (or year-president) and ".html"
 	url_start = "http://www.archives.gov/federal-register/executive-orders/"
@@ -104,7 +106,7 @@ while (year < 2017):
 		#switch presidents
 
 		#open new file with "year-president" string in filename
-		file = csv.writer(open(skipped_list[index] + "_orders.csv", "w"))
+		file = csv.writer(open(skipped_list[skip_index] + "_orders.csv", "w"))
 		#increment index for new inaugural date
 		i_index = i_index + 1
 		#reset exec order count
