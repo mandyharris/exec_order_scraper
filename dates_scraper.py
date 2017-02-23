@@ -66,8 +66,7 @@ def extractor( year, f, i_date, prev_order_num ):
 
 			#correcting typos from the website for accurate data
 			date_signed = date_signed_original.replace(".", ",")
-			date_signed = date_signed.strip()
-			date_signed = date_signed[:-4].strip() + " " + year
+			date_signed = date_signed.split(",")[0] + " " + year
 
 			#eisenhower '56 typo: October 22, 19656. How do I fix that?
 
@@ -82,7 +81,7 @@ def extractor( year, f, i_date, prev_order_num ):
 				day_num = abs((match.date() - i_date).days)
 
 				#write order count and number of days to csv
-				f.writerow([count, day_num, match, order_num.encode('utf8')])
+				f.writerow([count, day_num])
 
 				#increment order count
 				count = count + 1
@@ -98,6 +97,7 @@ count = 1715	#starting count (starts partway through FDR's presidency)
 #first file to write to
 file = csv.writer(open("1937-roosevelt_orders.csv", "w"))
 file.writerow(["Order Number", "Day Number"])
+file.writerow([0, 0])
 
 #the archive.gov site has most url's with just the year, but in years when
 #the presidency changes hands, it adds the president's last name
@@ -140,7 +140,8 @@ while (year < 2017):
 
 		#open new file with "year-president" string in filename
 		file = csv.writer(open(skipped_list[skip_index] + "_orders.csv", "w"))
-		file.writerow(["Order Number", "Day Number", "Date"])
+		file.writerow(["Order Number", "Day Number"])
+		file.writerow([0, 0])
 		#increment index for new inaugural date
 		i_index = i_index + 1
 		#reset exec order count
