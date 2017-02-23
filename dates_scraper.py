@@ -38,11 +38,16 @@ def extractor( year, f, i_date, prev_order_num ):
 	#gets the specific div from the page containing the data I want
 	div = soup.find("div", {"class" : "region region-content"})
 	date_list = div.findAll("ul")
-	order_num_list = div.findAll("strong")
-	#only the above line doesn't quite work because
-	#the first order in reagan's administration is missing the order
-	#number in strong tags and p tags aren't working because there are
-	#empty sets of p tags after each order. WHAT DO I DO.
+	order_num_list = div.findAll("p")
+
+
+	new_order_num_list = []
+
+	#remove sets of empty p tags in order_num_list
+	for item in order_num_list:
+		if (str(item) != "<p></p>"):
+			new_order_num_list.append(item)
+
 
 	#each date is in a separate "ul", the first "li" of each
 	for x in range(len(date_list)):
@@ -52,16 +57,19 @@ def extractor( year, f, i_date, prev_order_num ):
 		date_signed_original = items[0].find(text=True)
 
 		#get official order number
-		order_num_str = order_num_list[x].findAll(text=True)
+		order_num_str = new_order_num_list[x].findAll(text=True)
 		order_num = order_num_str[-1].strip()
 
 		#make sure orders aren't counted twice
 		if (order_num != prev_order_num):
 
+
 			#correcting typos from the website for accurate data
 			date_signed = date_signed_original.replace(".", ",")
 			date_signed = date_signed.strip()
 			date_signed = date_signed[:-4].strip() + " " + year
+
+			#eisenhower '56 typo: October 22, 19656. How do I fix that?
 
 			#extract the date from the text
 			matches = datefinder.find_dates(date_signed)
@@ -74,7 +82,7 @@ def extractor( year, f, i_date, prev_order_num ):
 				day_num = abs((match.date() - i_date).days)
 
 				#write order count and number of days to csv
-				f.writerow([count, day_num])
+				f.writerow([count, day_num, match, order_num.encode('utf8')])
 
 				#increment order count
 				count = count + 1
