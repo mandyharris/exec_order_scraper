@@ -104,14 +104,36 @@ file.writerow([0, 0])
 
 #skip_list is a list of the years when the presidency changed hands
 #skipped_list is a list of what will go in place of the year in the url
-skip_list = [1945, 1953, 1961, 1963, 1969, 1974, 1977, 1981, 1989, 1993, 2001, 2009]
-skipped_list = ["1945-roosevelt", "1945-truman", "1953-truman", "1953-eisenhower", "1961-eisenhower", "1961-kennedy", "1963-kennedy", "1963-johnson", "1969-johnson", "1969-nixon", "1974-nixon", "1974-ford", "1977-ford", "1977-carter", "1981-carter", "1981-reagan", "1989-reagan", "1989-bush", "1993-bush", "1993-clinton", "2001-clinton", "2001-wbush", "2009-wbush", "2009-obama"]
-skip_index = 0	#starting index (for skipped list)
 
-#list of inaugural dates
-inaugurations = [datetime.date(1933, 3, 4), datetime.date(1945, 4, 12), datetime.date(1953, 1, 20), datetime.date(1961, 1, 20), datetime.date(1963, 11, 22), datetime.date(1969, 1, 20), datetime.date(1974, 8, 9), datetime.date(1977, 1, 20), datetime.date(1981, 1, 20), datetime.date(1989, 1, 20), datetime.date(1993, 1, 20), datetime.date(2001, 1, 20), datetime.date(2009, 1, 20)]
-i_index = 0
+skip_list = []
+skipped_list = []
+inaug_list = []
 
+with open("years_names.csv", "rb") as filein:
+	reader = csv.reader(filein)
+	input = list(reader)
+
+for x in range(len(input)-1):
+	skip_list.append(input[x][0])
+	skipped_list.append(input[x][0] + "-" + input[x][1])
+	skipped_list.append(input[x][0] + "-" + input[x+1][1])
+
+
+for item in input:
+	inaug_list.append(item[2])
+
+#to hold list of inaugural dates
+inaugurations = []
+
+for item in inaug_list:
+	matches = datefinder.find_dates(item)
+	for match in matches:
+		inaugurations.append(match.date())
+
+skip_index = 0	#starting index for skipped list
+i_index = 0	#starting index for inaugurations list
+
+#initialize variable used to check for repeats
 prev_order_num = " "
 
 #loop through years from 1937 through 2016
@@ -120,7 +142,7 @@ while (year < 2017):
 	skip_year = False
 	#check if year should be skipped
 	for skip in skip_list:
-		if (year == skip):
+		if (str(year) == skip):
 			skip_year = True
 
 	#non-skip year
