@@ -137,7 +137,7 @@ i_index = 0	#starting index for inaugurations list
 prev_order_num = " "
 
 #loop through years from 1937 through 2016
-while (year < 2017):
+while (year < 2018):
 	#initalize bool to check for years to skip
 	skip_year = False
 	#check if year should be skipped
