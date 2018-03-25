@@ -68,8 +68,6 @@ def extractor( year, f, i_date, prev_order_num ):
 			date_signed = date_signed_original.replace(".", ",")
 			date_signed = date_signed.split(",")[0] + " " + year
 
-			#eisenhower '56 typo: October 22, 19656. How do I fix that?
-
 			#extract the date from the text
 			matches = datefinder.find_dates(date_signed)
 
@@ -113,10 +111,14 @@ with open("years_names.csv", "rb") as filein:
 	reader = csv.reader(filein)
 	input = list(reader)
 
-for x in range(len(input)-1):
+for x in range(len(input)):
 	skip_list.append(input[x][0])
+	print(input[x][0])
 	skipped_list.append(input[x][0] + "-" + input[x][1])
-	skipped_list.append(input[x][0] + "-" + input[x+1][1])
+	print(input[x][0] + "-" + input[x][1])
+	if (input[x][0] != "2017"):
+		skipped_list.append(input[x][0] + "-" + input[x+1][1])
+		print(input[x][0] + "-" + input[x+1][1])
 
 
 for item in input:
@@ -161,19 +163,19 @@ while (year < 2018):
 		#switch presidents
 
 		#open new file with "year-president" string in filename
-		file = csv.writer(open(skipped_list[skip_index] + "_orders.csv", "w"))
-		file.writerow(["Order Number", "Day Number"])
-		file.writerow([0, 0])
-		#increment index for new inaugural date
-		i_index = i_index + 1
-		#reset exec order count
-		count = 1
+		if (year < 2017):
+			file = csv.writer(open(skipped_list[skip_index] + "_orders.csv", "w"))
+			file.writerow(["Order Number", "Day Number"])
+			file.writerow([0, 0])
+			#increment index for new inaugural date
+			i_index = i_index + 1
+			#reset exec order count
+			count = 1
 
-		#I could've made this a separate function or something as this
-		#code is repeated but it seemed like a waste for only two lines
-		prev_order_num = extractor(skipped_list[skip_index], file, inaugurations[i_index], prev_order_num)
-		skip_index = skip_index + 1
+			#I could've made this a separate function or something as this
+			#code is repeated but it seemed like a waste for only two lines
+			prev_order_num = extractor(skipped_list[skip_index], file, inaugurations[i_index], prev_order_num)
+			skip_index = skip_index + 1
 
 	#increment year
 	year = year + 1
-
