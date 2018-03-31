@@ -113,12 +113,9 @@ with open("years_names.csv", "rb") as filein:
 
 for x in range(len(input)):
 	skip_list.append(input[x][0])
-	print(input[x][0])
 	skipped_list.append(input[x][0] + "-" + input[x][1])
-	print(input[x][0] + "-" + input[x][1])
 	if (input[x][0] != "2017"):
 		skipped_list.append(input[x][0] + "-" + input[x+1][1])
-		print(input[x][0] + "-" + input[x+1][1])
 
 
 for item in input:
