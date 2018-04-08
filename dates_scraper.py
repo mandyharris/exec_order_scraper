@@ -120,7 +120,7 @@ skip_list = []
 skipped_list = []
 inaug_list = []
 
-with open("years_names.csv", "rb") as filein:
+with open("metadata.csv", "rb") as filein:
     reader = csv.reader(filein)
     input = list(reader)
 
@@ -240,7 +240,7 @@ name_list = ["roosevelt"]
 party_list = ["democrat"]
 
 #get ~metadata
-with open("years_names.csv", "rb") as filein:
+with open("metadata.csv", "rb") as filein:
     reader = csv.reader(filein)
     input = list(reader)
 
@@ -249,7 +249,7 @@ for x in range(len(input)-1):
     name_list.append(input[x+1][1])
     party_list.append(input[x+1][3])
 
-#ending lists, entries aren't in years_names.csv for some wacky reason
+#ending lists, entries aren't in metadata.csv for some wacky reason
 name_list.append("trump")
 party_list.append("republican")
 
